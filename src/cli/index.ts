@@ -48,6 +48,14 @@ async function main() {
 
       console.log(chalk.green(' ✓ Created .opencode/agents/orchestrator.md (Primary Agent)'));
       
+      // Create opencode.json to replace Build/Plan with Orchestrator
+      const opencodeConfigPath = join(cwd, 'opencode.json');
+      if (!existsSync(opencodeConfigPath) || options.force) {
+        const opencodeConfig = generateOpencodeConfig();
+        writeFileSync(opencodeConfigPath, opencodeConfig);
+        console.log(chalk.green(' ✓ Created opencode.json (replaces Build/Plan with Orchestrator)'));
+      }
+
       if (!existsSync(agentsMdPath) || options.force) {
         writeFileSync(agentsMdPath, generateProjectAgentsMd());
         console.log(chalk.green(' ✓ Created AGENTS.md'));
@@ -344,6 +352,21 @@ ${codeBlock}
 
 See: https://github.com/thedileepkumar-dk/Opencode-Orchestrator
 `;
+}
+
+function generateOpencodeConfig(): string {
+  const config = {
+    $schema: 'https://opencode.ai/config.json',
+    agent: {
+      build: {
+        disable: true
+      },
+      plan: {
+        disable: true
+      }
+    }
+  };
+  return JSON.stringify(config, null, 2);
 }
 
 main().catch(err => {
