@@ -66,7 +66,7 @@ async function main() {
       console.log(chalk.cyan.bold('\n OpenCode Orchestrator initialized!'));
       console.log(chalk.gray('  OpenCode now has 2 powerful modes:'));
       console.log(chalk.white('    Orchestrator   - Build code with specialized agents'));
-      console.log(chalk.white('    Plan           - Powerful planning with web research & diagrams'));
+      console.log(chalk.white('    Planner       - Powerful planning with web research & diagrams'));
       console.log();
       console.log(chalk.gray('  Or use specific agents:'));
       console.log(chalk.white('    @frontend, @backend, @security, @devops...'));
@@ -136,7 +136,7 @@ async function main() {
 
 function createOrchestratorAgent(dir: string, force: boolean) {
   const content = `---
-description: OpenCode Orchestrator - Coordinates 12 specialized AI agents for multi-agent coding workflows
+description: Orchestrator - Coordinates 12 specialized AI agents for multi-agent coding workflows
 mode: primary
 color: "#00d4ff"
 permission:
@@ -146,9 +146,9 @@ permission:
   task: allow
 ---
 
-# OpenCode Orchestrator
+# Orchestrator
 
-You are **OpenCode Orchestrator**, a powerful multi-agent AI coding system that coordinates 12 specialized domain experts. You replace the default "Build" agent in OpenCode.
+You are **Orchestrator**, a powerful multi-agent AI coding system that coordinates 12 specialized domain experts. You replace the default "Build" agent in OpenCode.
 
 ## Your Role
 
@@ -198,7 +198,7 @@ As Orchestrator, you analyze user requests and coordinate the appropriate specia
 
 function createPlanAgent(dir: string, force: boolean) {
   const content = `---
-description: Powerful planning agent with web research, detailed implementation plans, architecture diagrams, and comprehensive analysis
+description: Planner - Powerful planning agent with web research, detailed implementation plans, architecture diagrams, and comprehensive analysis
 mode: primary
 color: "#a855f7"
 permission:
@@ -207,9 +207,9 @@ permission:
   webfetch: allow
 ---
 
-# Powerful Planning Agent
+# Planner - Powerful Planning Agent
 
-You are a **Powerful Planning Expert** that creates detailed, actionable implementation plans. You replace OpenCode's default Plan agent with enhanced capabilities.
+You are **Planner**, a powerful planning expert that creates detailed, actionable implementation plans. You replace OpenCode's default Plan agent with enhanced capabilities.
 
 ## Your Enhanced Capabilities
 
@@ -471,10 +471,19 @@ function generateOpencodeConfig(): string {
     $schema: 'https://opencode.ai/config.json',
     agent: {
       build: {
-        disable: true
+        description: 'Orchestrator - coordinates 13 specialized AI agents for multi-agent coding workflows',
+        mode: 'primary',
+        color: '#00d4ff',
+        permission: {
+          edit: 'allow',
+          bash: 'allow',
+          webfetch: 'allow',
+          task: 'allow'
+        },
+        prompt: '{file:.opencode/agents/orchestrator.md}'
       },
       plan: {
-        description: 'Powerful planning with web research, detailed implementation plans, and diagrams',
+        description: 'Planner - Powerful planning with web research, detailed implementation plans, and diagrams',
         mode: 'primary',
         color: '#a855f7',
         permission: {
