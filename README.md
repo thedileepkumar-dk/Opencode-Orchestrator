@@ -90,6 +90,18 @@ opencode-orchestrator --version
 ocor --version
 ```
 
+### Updating (Existing Users)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/thedileepkumar-dk/Opencode-Orchestrator/main/scripts/install.sh | bash
+```
+
+Or use the built-in update command:
+
+```bash
+opencode-orchestrator update
+```
+
 ---
 
 ## Quick Start
