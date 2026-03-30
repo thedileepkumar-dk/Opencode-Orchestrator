@@ -604,14 +604,6 @@ opencode-orchestrator/
 
 ---
 
-## Inspired By
-
-- **[OpenCode](https://github.com/anomalyco/opencode)** — The open source AI coding agent (132K+ stars)
-- **[Gas Town](https://github.com/steveyegge/gastown)** — Steve Yegge's multi-agent workspace manager
-- **[Kilo Code](https://kilo.ai)** — Repo-aware agentic coding with hybrid indexing
-
----
-
 ## Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a PR.
