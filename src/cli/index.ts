@@ -43,19 +43,20 @@ async function main() {
 
       console.log(chalk.cyan('\n Creating OpenCode Orchestrator agents...\n'));
 
-      createOrchestratorAgent(opencodeDir, options.force);
-      createPlanAgent(opencodeDir, options.force);
+      // Create build.md (becomes Orchestrator) and plan.md (becomes Planner)
+      createBuildAgent(opencodeDir, options.force);
+      createPlannerAgent(opencodeDir, options.force);
       createSubagents(opencodeDir, options.force);
 
-      console.log(chalk.green(' ✓ Created .opencode/agents/orchestrator.md (Primary Agent - replaces Build)'));
-      console.log(chalk.green(' ✓ Created .opencode/agents/plan.md (Powerful Planning Agent - replaces Plan)'));
+      console.log(chalk.green(' ✓ Created .opencode/agents/build.md (Orchestrator - replaces Build)'));
+      console.log(chalk.green(' ✓ Created .opencode/agents/plan.md (Planner - replaces Plan)'));
       
-      // Create opencode.json to replace Build/Plan with our custom agents
+      // Create opencode.json 
       const opencodeConfigPath = join(cwd, 'opencode.json');
       if (!existsSync(opencodeConfigPath) || options.force) {
         const opencodeConfig = generateOpencodeConfig();
         writeFileSync(opencodeConfigPath, opencodeConfig);
-        console.log(chalk.green(' ✓ Created opencode.json (replaces Build/Plan with custom agents)'));
+        console.log(chalk.green(' ✓ Created opencode.json'));
       }
 
       if (!existsSync(agentsMdPath) || options.force) {
@@ -113,8 +114,8 @@ async function main() {
           return;
         }
 
-        createOrchestratorAgent(opencodeDir, true);
-        createPlanAgent(opencodeDir, true);
+        createBuildAgent(opencodeDir, true);
+        createPlannerAgent(opencodeDir, true);
         createSubagents(opencodeDir, true);
 
         if (existsSync(agentsMdPath)) {
@@ -134,7 +135,7 @@ async function main() {
   program.parse();
 }
 
-function createOrchestratorAgent(dir: string, force: boolean) {
+function createBuildAgent(dir: string, force: boolean) {
   const content = `---
 description: Orchestrator - Coordinates 12 specialized AI agents for multi-agent coding workflows
 mode: primary
@@ -193,10 +194,10 @@ As Orchestrator, you analyze user requests and coordinate the appropriate specia
 - Synthesize results from multiple agents into cohesive solutions
 `;
 
-  writeFileSync(join(dir, 'orchestrator.md'), content);
+  writeFileSync(join(dir, 'build.md'), content);
 }
 
-function createPlanAgent(dir: string, force: boolean) {
+function createPlannerAgent(dir: string, force: boolean) {
   const content = `---
 description: Planner - Powerful planning agent with web research, detailed implementation plans, architecture diagrams, and comprehensive analysis
 mode: primary
@@ -480,7 +481,7 @@ function generateOpencodeConfig(): string {
           webfetch: 'allow',
           task: 'allow'
         },
-        prompt: '{file:.opencode/agents/orchestrator.md}'
+        prompt: '{file:.opencode/agents/build.md}'
       },
       plan: {
         description: 'Planner - Powerful planning with web research, detailed implementation plans, and diagrams',
