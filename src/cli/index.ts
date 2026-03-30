@@ -44,16 +44,18 @@ async function main() {
       console.log(chalk.cyan('\n Creating OpenCode Orchestrator agents...\n'));
 
       createOrchestratorAgent(opencodeDir, options.force);
+      createPlanAgent(opencodeDir, options.force);
       createSubagents(opencodeDir, options.force);
 
-      console.log(chalk.green(' ✓ Created .opencode/agents/orchestrator.md (Primary Agent)'));
+      console.log(chalk.green(' ✓ Created .opencode/agents/orchestrator.md (Primary Agent - replaces Build)'));
+      console.log(chalk.green(' ✓ Created .opencode/agents/plan.md (Powerful Planning Agent - replaces Plan)'));
       
-      // Create opencode.json to replace Build/Plan with Orchestrator
+      // Create opencode.json to replace Build/Plan with our custom agents
       const opencodeConfigPath = join(cwd, 'opencode.json');
       if (!existsSync(opencodeConfigPath) || options.force) {
         const opencodeConfig = generateOpencodeConfig();
         writeFileSync(opencodeConfigPath, opencodeConfig);
-        console.log(chalk.green(' ✓ Created opencode.json (replaces Build/Plan with Orchestrator)'));
+        console.log(chalk.green(' ✓ Created opencode.json (replaces Build/Plan with custom agents)'));
       }
 
       if (!existsSync(agentsMdPath) || options.force) {
@@ -62,13 +64,12 @@ async function main() {
       }
 
       console.log(chalk.cyan.bold('\n OpenCode Orchestrator initialized!'));
-      console.log(chalk.gray('  Start OpenCode and use:'));
-      console.log(chalk.white('    @orchestrator   - Main orchestrator (replaces Build)'));
-      console.log(chalk.white('    @frontend      - Frontend expert'));
-      console.log(chalk.white('    @backend       - Backend expert'));
-      console.log(chalk.white('    @security      - Security expert'));
-      console.log(chalk.white('    @devops        - DevOps expert'));
-      console.log(chalk.white('    ...and 8 more'));
+      console.log(chalk.gray('  OpenCode now has 2 powerful modes:'));
+      console.log(chalk.white('    Orchestrator   - Build code with specialized agents'));
+      console.log(chalk.white('    Plan           - Powerful planning with web research & diagrams'));
+      console.log();
+      console.log(chalk.gray('  Or use specific agents:'));
+      console.log(chalk.white('    @frontend, @backend, @security, @devops...'));
       console.log();
     });
 
@@ -113,6 +114,7 @@ async function main() {
         }
 
         createOrchestratorAgent(opencodeDir, true);
+        createPlanAgent(opencodeDir, true);
         createSubagents(opencodeDir, true);
 
         if (existsSync(agentsMdPath)) {
@@ -194,6 +196,115 @@ As Orchestrator, you analyze user requests and coordinate the appropriate specia
   writeFileSync(join(dir, 'orchestrator.md'), content);
 }
 
+function createPlanAgent(dir: string, force: boolean) {
+  const content = `---
+description: Powerful planning agent with web research, detailed implementation plans, architecture diagrams, and comprehensive analysis
+mode: primary
+color: "#a855f7"
+permission:
+  edit: deny
+  bash: allow
+  webfetch: allow
+---
+
+# Powerful Planning Agent
+
+You are a **Powerful Planning Expert** that creates detailed, actionable implementation plans. You replace OpenCode's default Plan agent with enhanced capabilities.
+
+## Your Enhanced Capabilities
+
+### 1. Web Research & Information Gathering
+- Fetch latest documentation, best practices, and comparisons from the web
+- Research libraries, frameworks, and tools before recommending
+- Find real-world examples and case studies
+- Stay current with latest technologies and patterns
+
+### 2. Detailed Implementation Planning
+- Break down features into specific, actionable steps
+- Provide code snippets and examples for each step
+- Include file-by-file implementation guides
+- Define clear success criteria and acceptance tests
+
+### 3. Architecture Planning & Visual Diagrams
+- Create system architecture diagrams using Mermaid
+- Design database schemas with ERD diagrams
+- Plan API structures with request/response examples
+- Visualize data flows and component relationships
+
+Example Mermaid diagrams:
+\\\`\\\`\\\`mermaid
+graph TD
+    A[Client] --> B[API Gateway]
+    B --> C[Auth Service]
+    B --> D[User Service]
+    C --> E[Database]
+    D --> E
+\\\`\\\`\\\`
+
+### 4. Risk Assessment & Mitigation
+- Identify potential issues and blockers
+- Propose contingency plans
+- Assess security implications
+- Consider scalability concerns
+
+### 5. Multi-Strategy Analysis
+- Present 2-3 different approaches for each problem
+- Compare tradeoffs (simplicity vs scalability vs speed)
+- Make clear recommendations with reasoning
+
+### 6. Comprehensive Task Breakdown
+- Create detailed TODO lists with priorities
+- Estimate complexity for each task
+- Identify dependencies between tasks
+- Suggest testing strategy for each component
+
+## Planning Workflow
+
+1. **Understand**: Clarify the goal and requirements
+2. **Research**: Fetch relevant documentation and best practices
+3. **Analyze**: Consider multiple approaches and tradeoffs
+4. **Design**: Create diagrams and architecture plans
+5. **Plan**: Break down into actionable tasks with priorities
+6. **Assess**: Identify risks and mitigation strategies
+
+## Output Format
+
+For each planning request, provide:
+
+### 1. Summary
+Brief overview of what will be built
+
+### 2. Architecture (with diagrams)
+System design using Mermaid diagrams
+
+### 3. Approaches Considered
+2-3 options with pros/cons
+
+### 4. Recommended Approach
+Clear recommendation with reasoning
+
+### 5. Implementation Plan
+Step-by-step tasks with priorities
+
+### 6. Risks & Mitigations
+Potential issues and how to address them
+
+### 7. Testing Strategy
+How to verify the implementation
+
+## Guidelines
+
+- Always research latest best practices before recommending
+- Provide code examples wherever possible
+- Use diagrams to visualize complex systems
+- Be specific about files and components to create
+- Consider security, performance, and maintainability
+- Make plans actionable and detailed
+`;
+
+  writeFileSync(join(dir, 'plan.md'), content);
+}
+
 function createSubagents(dir: string, force: boolean) {
   const agents = [
     {
@@ -228,7 +339,7 @@ function createSubagents(dir: string, force: boolean) {
       name: 'devops',
       color: '#7bed9f',
       description: 'DevOps expert - Docker, Kubernetes, CI/CD, infrastructure as code',
-      expertise: `Docker, Kubernetes, Helm, Docker Compose, Terraform, Pulumi, AWS, GCP, Azure, GitHub Actions, GitLab CI, Jenkins, CircleCI, monitoring (Prometheus, Grafana), logging, alerting, deployment strategies, infrastructure as code, serverless, networking`,
+      expertise: `Docker, Kubernetes, Helm, Docker Compose, Terraform, pulumi, AWS, GCP, Azure, GitHub Actions, GitLab CI, Jenkins, CircleCI, monitoring (Prometheus, Grafana), logging, alerting, deployment strategies, infrastructure as code, serverless, networking`,
       tasks: 'Containerization, CI/CD pipelines, infrastructure setup, deployment configurations, monitoring, Kubernetes manifests'
     },
     {
@@ -320,17 +431,18 @@ Use this agent for: ${agent.tasks}
 
 function generateProjectAgentsMd(): string {
   const at = '@';
-  const codeBlock = '```bash\n# Start OpenCode\nopencode\n\n# Use Orchestrator (replaces default Build agent)\n' + at + 'orchestrator help me build a login system\n\n# Or invoke specific agents directly\n' + at + 'frontend create a navbar component\n' + at + 'backend create user API endpoints\n' + at + 'security audit for vulnerabilities\n' + at + 'devops add Docker configuration\n```';
+  const codeBlock = '```bash\n# Start OpenCode\nopencode\n\n# Use Orchestrator (replaces Build)\n' + at + 'orchestrator build a login system\n\n# Use Plan (powerful planning with web research)\n' + at + 'plan create a detailed implementation plan for a SaaS app\n\n# Or invoke specific agents directly\n' + at + 'frontend create a navbar component\n' + at + 'backend create user API endpoints\n' + at + 'security audit for vulnerabilities\n' + at + 'devops add Docker configuration\n```';
   
   return `# OpenCode Orchestrator Agents
 
-This project uses OpenCode Orchestrator with 13 specialized AI agents.
+This project uses OpenCode Orchestrator with 14 specialized AI agents.
 
 ## Available Agents
 
 | Agent | Type | Description |
 |-------|------|-------------|
 | orchestrator | primary | Main orchestrator - coordinates all agents (replaces Build) |
+| plan | primary | Powerful planning with web research & diagrams (replaces Plan) |
 | frontend | subagent | React, Vue, Angular, Svelte, CSS, responsive design |
 | backend | subagent | APIs, databases, auth, microservices, middleware |
 | uiux | subagent | Design systems, accessibility, component architecture |
@@ -362,7 +474,15 @@ function generateOpencodeConfig(): string {
         disable: true
       },
       plan: {
-        disable: true
+        description: 'Powerful planning with web research, detailed implementation plans, and diagrams',
+        mode: 'primary',
+        color: '#a855f7',
+        permission: {
+          edit: 'deny',
+          bash: 'allow',
+          webfetch: 'allow'
+        },
+        prompt: '{file:.opencode/agents/plan.md}'
       }
     }
   };
