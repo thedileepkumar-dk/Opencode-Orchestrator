@@ -1,5 +1,5 @@
 {
-  "name": "opencode-orchestrator",
+  "name": "ocor-cli",
   "version": "1.0.0",
   "description": "Powerful multi-agent orchestrator for OpenCode — 12+ specialized AI agents that work together",
   "main": "dist/index.js",
@@ -61,6 +61,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/opencode-orchestrator/opencode-orchestrator"
+    "url": "https://github.com/thedileepkumar-dk/Opencode-Orchestrator"
   }
 }

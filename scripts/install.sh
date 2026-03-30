@@ -61,8 +61,8 @@ get_npm_global_bin() {
 
 # Install from npm (primary method)
 install_npm() {
-  info "Installing opencode-orchestrator via npm..."
-  if npm install -g opencode-orchestrator@latest 2>/dev/null; then
+  info "Installing ocor-cli (OpenCode Orchestrator) via npm..."
+  if npm install -g ocor-cli@latest 2>/dev/null; then
     return 0
   fi
   return 1
@@ -121,7 +121,7 @@ elif [ -f "$ORCH_DIR/src/cli/index.ts" ]; then
   exec npx tsx "$ORCH_DIR/src/cli/index.ts" "$@"
 else
   echo "Error: OpenCode Orchestrator not properly installed."
-  echo "Try: npm install -g opencode-orchestrator"
+  echo "Try: npm install -g ocor-cli"
   exit 1
 fi
 WRAPPER

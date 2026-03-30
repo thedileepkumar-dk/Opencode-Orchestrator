@@ -312,7 +312,7 @@ async function main() {
       try {
         let latestVersion: string;
         try {
-          latestVersion = execSync('npm view opencode-orchestrator version', {
+          latestVersion = execSync('npm view ocor-cli version', {
             encoding: 'utf-8',
             timeout: 15000,
           }).trim();
@@ -347,7 +347,7 @@ async function main() {
         const updateSpinner = ora('Installing update...').start();
 
         try {
-          execSync('npm install -g opencode-orchestrator@latest', {
+          execSync('npm install -g ocor-cli@latest', {
             encoding: 'utf-8',
             timeout: 120000,
             stdio: 'pipe',
@@ -369,7 +369,7 @@ async function main() {
 
           const altSpinner = ora('Reinstalling from source...').start();
           try {
-            execSync('npm install -g opencode-orchestrator@latest --force', {
+            execSync('npm install -g ocor-cli@latest --force', {
               encoding: 'utf-8',
               timeout: 120000,
               stdio: 'pipe',
@@ -380,7 +380,7 @@ async function main() {
             altSpinner.fail('Update failed');
             console.log(chalk.red('\n Manual update required:'));
             console.log(chalk.gray('  npm uninstall -g opencode-orchestrator'));
-            console.log(chalk.gray('  npm install -g opencode-orchestrator@latest'));
+            console.log(chalk.gray('  npm install -g ocor-cli@latest'));
             process.exit(1);
           }
         }

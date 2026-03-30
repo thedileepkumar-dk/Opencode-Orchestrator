@@ -69,7 +69,7 @@ curl -fsSL https://raw.githubusercontent.com/thedileepkumar-dk/Opencode-Orchestr
 ### Option 2: npm
 
 ```bash
-npm install -g opencode-orchestrator
+npm install -g ocor-cli
 ```
 
 ### Option 3: From Source
@@ -536,7 +536,7 @@ opencode-orchestrator update
 ocor update
 
 # Or update manually via npm
-npm update -g opencode-orchestrator
+npm update -g ocor-cli
 ```
 
 The `update` command:
