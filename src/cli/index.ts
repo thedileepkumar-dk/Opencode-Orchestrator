@@ -298,6 +298,100 @@ async function main() {
       }
     });
 
+  program
+    .command('update')
+    .description('Update OpenCode Orchestrator to the latest version')
+    .option('--check', 'Only check for updates, do not install')
+    .option('--force', 'Force update even if already on latest')
+    .action(async (options: any) => {
+      console.log(banner);
+      const { execSync } = await import('child_process');
+
+      const spinner = ora('Checking for updates...').start();
+
+      try {
+        let latestVersion: string;
+        try {
+          latestVersion = execSync('npm view opencode-orchestrator version', {
+            encoding: 'utf-8',
+            timeout: 15000,
+          }).trim();
+        } catch {
+          spinner.fail('Could not check for updates — are you online?');
+          console.log(chalk.gray('  You can also run: npm update -g opencode-orchestrator'));
+          process.exit(1);
+        }
+
+        spinner.stop();
+
+        console.log(chalk.yellow('  Current version: ') + chalk.white(VERSION));
+        console.log(chalk.yellow('  Latest version:  ') + chalk.white(latestVersion));
+        console.log();
+
+        if (VERSION === latestVersion && !options.force) {
+          console.log(chalk.green.bold(' You are on the latest version!'));
+          console.log(chalk.gray('  Use --force to reinstall anyway'));
+          return;
+        }
+
+        if (options.check) {
+          if (VERSION !== latestVersion) {
+            console.log(chalk.yellow.bold(`  Update available: ${VERSION} → ${latestVersion}`));
+            console.log(chalk.gray('  Run: opencode-orchestrator update'));
+          }
+          return;
+        }
+
+        console.log(chalk.cyan.bold(` Updating from v${VERSION} to v${latestVersion}...\n`));
+
+        const updateSpinner = ora('Installing update...').start();
+
+        try {
+          execSync('npm install -g opencode-orchestrator@latest', {
+            encoding: 'utf-8',
+            timeout: 120000,
+            stdio: 'pipe',
+          });
+
+          updateSpinner.succeed(`Updated to v${latestVersion}`);
+
+          console.log();
+          console.log(chalk.green.bold(' Update complete!'));
+          console.log(chalk.gray('  Restart your terminal or run: hash -r'));
+          console.log(chalk.gray('  Then verify: opencode-orchestrator --version'));
+          console.log();
+          console.log(chalk.yellow(' What\'s new:'));
+          console.log(chalk.gray('  See: https://github.com/thedileepkumar-dk/Opencode-Orchestrator/releases'));
+        } catch (installError: any) {
+          updateSpinner.fail('Update failed via npm');
+
+          console.log(chalk.yellow('\n Trying alternative method...\n'));
+
+          const altSpinner = ora('Reinstalling from source...').start();
+          try {
+            execSync('npm install -g opencode-orchestrator@latest --force', {
+              encoding: 'utf-8',
+              timeout: 120000,
+              stdio: 'pipe',
+            });
+            altSpinner.succeed(`Updated to v${latestVersion}`);
+            console.log(chalk.green.bold('\n Update complete!'));
+          } catch {
+            altSpinner.fail('Update failed');
+            console.log(chalk.red('\n Manual update required:'));
+            console.log(chalk.gray('  npm uninstall -g opencode-orchestrator'));
+            console.log(chalk.gray('  npm install -g opencode-orchestrator@latest'));
+            process.exit(1);
+          }
+        }
+      } catch (error: any) {
+        spinner.fail('Update check failed');
+        console.error(chalk.red(`  ${error.message}`));
+        console.log(chalk.gray('\n  Manual update: npm update -g opencode-orchestrator'));
+        process.exit(1);
+      }
+    });
+
   program.parse();
 }
 
