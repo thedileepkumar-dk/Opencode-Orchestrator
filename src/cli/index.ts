@@ -472,7 +472,13 @@ function generateOpencodeConfig(): string {
     $schema: 'https://opencode.ai/config.json',
     agent: {
       build: {
-        description: 'Orchestrator - coordinates 13 specialized AI agents for multi-agent coding workflows',
+        disable: true
+      },
+      plan: {
+        disable: true
+      },
+      orchestrator: {
+        description: 'Orchestrator - Coordinates 12 specialized AI agents for multi-agent coding workflows',
         mode: 'primary',
         color: '#00d4ff',
         permission: {
@@ -483,7 +489,7 @@ function generateOpencodeConfig(): string {
         },
         prompt: '{file:.opencode/agents/build.md}'
       },
-      plan: {
+      planner: {
         description: 'Planner - Powerful planning with web research, detailed implementation plans, and diagrams',
         mode: 'primary',
         color: '#a855f7',
