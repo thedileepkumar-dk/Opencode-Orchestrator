@@ -1,0 +1,29 @@
+{
+  "mode": "auto-pilot",
+  "maxAgents": 4,
+  "maxConcurrentTasks": 8,
+  "defaultModelTier": "standard",
+  "projectRoot": "/Users/dileepkumar/Documents/opencode-orchestrator",
+  "workingBranch": "main",
+  "useWorktrees": true,
+  "autoMerge": false,
+  "requireApproval": false,
+  "logLevel": "info",
+  "indexOnStart": true,
+  "watchFiles": true,
+  "memoryTTL": 86400000,
+  "sessionTimeout": 3600000,
+  "mcpServers": [],
+  "agentOverrides": {},
+  "excludePatterns": [
+    "node_modules",
+    ".git",
+    "dist",
+    "build",
+    "__pycache__",
+    ".venv",
+    "vendor",
+    "target"
+  ],
+  "includePatterns": []
+}

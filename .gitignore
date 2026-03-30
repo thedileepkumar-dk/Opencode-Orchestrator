@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.local
+.opencode-orchestrator-state/
+*.log
+.DS_Store
+coverage/
+.vitest/

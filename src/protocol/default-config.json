@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "modes": {
+    "default": "auto",
+    "available": ["auto", "supervised", "specialist", "swarm", "review-crew"]
+  },
+  "agents": {
+    "enabled": ["frontend", "backend", "uiux", "security", "devops", "mobile", "qa", "ml", "docs", "performance", "database", "refactor"],
+    "modelTiers": {
+      "low": "gpt-4o-mini",
+      "mid": "gpt-4o",
+      "high": "claude-sonnet-4-20250514",
+      "critical": "claude-opus-4-20250514"
+    },
+    "agentModels": {
+      "frontend": "mid",
+      "backend": "high",
+      "uiux": "mid",
+      "security": "high",
+      "devops": "mid",
+      "mobile": "mid",
+      "qa": "low",
+      "ml": "high",
+      "docs": "low",
+      "performance": "mid",
+      "database": "high",
+      "refactor": "high"
+    },
+    "maxRetries": 3,
+    "timeoutMs": 120000
+  },
+  "orchestrator": {
+    "maxParallel": 4,
+    "selfHealing": true,
+    "healingMaxRounds": 3,
+    "conflictResolution": "ast-merge",
+    "verbose": false
+  },
+  "indexing": {
+    "enabled": true,
+    "watchFiles": true,
+    "vectorSearch": true,
+    "astParsing": true,
+    "codeGraph": true,
+    "ignorePatterns": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      ".git/**",
+      "*.min.js",
+      "*.min.css",
+      "vendor/**",
+      "__pycache__/**",
+      "*.pyc",
+      ".next/**",
+      ".nuxt/**"
+    ],
+    "maxFileSizeKb": 500,
+    "chunkSize": 50
+  },
+  "memory": {
+    "sessionTtlMinutes": 480,
+    "maxContextTokens": 100000,
+    "persistLearnings": true,
+    "compactionThreshold": 0.8
+  },
+  "selfHealing": {
+    "enabled": true,
+    "runTests": true,
+    "runLinter": true,
+    "runTypeCheck": true,
+    "autoFixPatterns": [
+      "import-error",
+      "type-error",
+      "syntax-error",
+      "missing-dependency",
+      "unused-import"
+    ],
+    "testCommands": {
+      "default": "npm test",
+      "vitest": "npx vitest run",
+      "jest": "npx jest --passWithNoTests",
+      "pytest": "python -m pytest",
+      "go": "go test ./..."
+    }
+  },
+  "review": {
+    "agents": ["security", "performance", "qa", "docs", "refactor"],
+    "blockingSeverity": "high",
+    "requireAllPass": false
+  },
+  "git": {
+    "autoBranch": true,
+    "branchPrefix": "ocor/",
+    "worktreeIsolation": true,
+    "autoCommit": false,
+    "commitPrefix": "[orchestrator]"
+  }
+}
